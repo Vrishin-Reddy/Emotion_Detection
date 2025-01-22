@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Paths to the saved models and results
-save_dir = "C:\\Users\\vrishin\\Documents\\AIT_526_MP\\model_saves"
+save_dir = os.path.join(os.path.dirname(__file__), "model_saves")
 results_file = os.path.join(save_dir, "results.csv")
 vectorizer_file = os.path.join(save_dir, "tfidf_vect.pk")
 
@@ -43,14 +43,17 @@ vectorizer = load_vectorizer()
 @st.cache_resource
 def load_models():
     loaded_models = {}
-    for filename in os.listdir(save_dir):
-        if filename.endswith("_text_emotion_model.sav"):
-            try:
-                model_name = filename.split("_text_emotion_model.sav")[0].replace("_", " ").title()
-                with open(os.path.join(save_dir, filename), 'rb') as f:
-                    loaded_models[model_name] = pickle.load(f)
-            except Exception as e:
-                st.error(f"Error loading model {filename}: {e}")
+    if os.path.exists(save_dir):
+        for filename in os.listdir(save_dir):
+            if filename.endswith("_text_emotion_model.sav"):
+                try:
+                    model_name = filename.split("_text_emotion_model.sav")[0].replace("_", " ").title()
+                    with open(os.path.join(save_dir, filename), 'rb') as f:
+                        loaded_models[model_name] = pickle.load(f)
+                except Exception as e:
+                    st.error(f"Error loading model {filename}: {e}")
+    else:
+        st.error(f"Model save directory '{save_dir}' does not exist.")
     return loaded_models
 
 models = load_models()
