@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Paths to the saved models and results
-save_dir = os.path.join(os.path.dirname(__file__), "Emotion_Detection", "model_saves")
+save_dir = os.path.join(os.getcwd(), "Emotion_Detection", "model_saves")
 
 results_file = os.path.join(save_dir, "results.csv")
 vectorizer_file = os.path.join(save_dir, "tfidf_vect.pk")
@@ -33,36 +33,41 @@ model_results = load_model_results()
 # Load vectorizer
 @st.cache_resource
 def load_vectorizer():
+    vectorizer_file = os.path.join(save_dir, "tfidf_vect.pk")
     if os.path.exists(vectorizer_file):
-        with open(vectorizer_file, 'rb') as f:
+        with open(vectorizer_file, "rb") as f:
             return pickle.load(f)
+    st.error(f"Vectorizer file not found at {vectorizer_file}.")
     return None
-
 vectorizer = load_vectorizer()
 
 # Load models dynamically
 @st.cache_resource
 def load_models():
     loaded_models = {}
-    if os.path.exists(save_dir):
-        for filename in os.listdir(save_dir):
-            if filename.endswith("_text_emotion_model.sav"):
-                try:
-                    model_name = filename.split("_text_emotion_model.sav")[0].replace("_", " ").title()
-                    with open(os.path.join(save_dir, filename), 'rb') as f:
-                        loaded_models[model_name] = pickle.load(f)
-                except Exception as e:
-                    st.error(f"Error loading model {filename}: {e}")
-    else:
-        st.error(f"Model save directory '{save_dir}' does not exist.")
-    return loaded_models
+    if not os.path.exists(save_dir):
+        st.error(f"Directory {save_dir} does not exist.")
+        return loaded_models
 
+    for filename in os.listdir(save_dir):
+        if filename.endswith("_text_emotion_model.sav"):
+            try:
+                model_name = filename.split("_text_emotion_model.sav")[0].replace("_", " ").title()
+                with open(os.path.join(save_dir, filename), "rb") as f:
+                    loaded_models[model_name] = pickle.load(f)
+            except Exception as e:
+                st.error(f"Error loading model {filename}: {e}")
+    return loaded_models
 models = load_models()
 
 # Load Cross-Validation Results
 @st.cache_data
 def load_cross_validation_results():
     cv_results = {}
+    if not os.path.exists(save_dir):
+        st.error(f"Directory {save_dir} does not exist.")
+        return cv_results
+
     for filename in os.listdir(save_dir):
         if filename.endswith("_cross_validation_results.csv"):
             model_name = filename.split("_cross_validation_results.csv")[0].replace("_", " ").title()
@@ -357,7 +362,7 @@ if page == "Model Insights":
             st.markdown("### Metrics across different models and cross-validation folds")
 
             # Directory containing the model fit evaluation files
-            save_dir = os.path.join(os.path.dirname(__file__), "Emotion_Detection", "model_saves")
+            save_dir = os.path.join(os.getcwd(), "Emotion_Detection", "model_saves")
 
 
             # Find all CSV files containing cross-validation results
