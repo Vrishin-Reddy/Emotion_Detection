@@ -1,0 +1,76 @@
+# Core Libraries
+numpy==1.24.4
+pandas==1.5.3
+scipy
+
+# Data Visualization
+matplotlib
+seaborn
+
+# Machine Learning & Deep Learning
+scikit-learn
+tensorflow
+tensorflow-intel
+torch
+torchaudio
+torchvision
+transformers
+accelerate==0.29.1
+keras==2.15.0
+
+# Natural Language Processing (NLP)
+nltk
+spacy
+spacy-legacy
+spacy-loggers
+huggingface-hub
+thinc
+srsly
+preshed
+murmurhash
+blis
+
+# Jupyter and IPython Environment
+ipykernel
+ipython
+jupyter
+jupyter-client
+jupyter-console
+jupyterlab
+jupyterlab_widgets
+notebook
+widgetsnbextension
+nbclient
+nbconvert
+nbformat
+
+# Web and API Interaction
+requests
+beautifulsoup4
+urllib3
+httpx
+httpcore
+websocket-client
+
+# Serialization and File I/O
+openpyxl
+h5py
+smart-open
+
+# Utilities and Support Libraries
+certifi
+traitlets
+decorator
+cloudpathlib
+joblib
+psutil
+
+# Testing and Validation
+pydantic
+pydantic_core
+fastjsonschema
+jsonschema
+
+#Website
+Streamlit
+Flask

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Recognition Chatbot</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Animated Header -->
+        <header class="header animate__animated animate__fadeInDown">
+            <h1>Emotion Recognition Chatbot</h1>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="container animate__animated animate__fadeInUp">
+                <main class="main">
+                    <!-- Input Section -->
+                    <div class="input-section">
+                        <label for="sentenceInput" class="animate__animated animate__fadeInLeft">Enter your sentence:</label>
+                        <textarea id="sentenceInput" placeholder="Type something here..." class="animate__animated animate__fadeIn"></textarea>
+                    </div>
+
+                    <!-- Dropdown Section -->
+                    <div class="dropdown-section animate__animated animate__fadeInRight">
+                        <label for="modelSelect">Select a model:</label>
+                        <select id="modelSelect" onchange="updateModelAccuracy()">
+                            <option value="naive_bayes">Naive Bayes</option>
+                            <option value="svm">SVM</option>
+                            <option value="logistic_regression">Logistic Regression</option>
+                            <option value="lasso_regression" selected>Lasso Regression</option>
+                            <option value="decision_tree">Decision Tree</option>
+                            <option value="random_forest">Random Forest</option>
+                            <option value="knn">KNN</option>
+                            <option value="xgboost">XGBoost</option>
+                        </select>
+                        <div id="accuracyDisplay" class="accuracy-display">
+                            Model Accuracy: 90.22% <!-- Default accuracy for Lasso Regression -->
+                        </div>
+                    </div>
+
+                    <!-- Predict Button -->
+                    <button onclick="predictEmotion()" class="btn animate__animated animate__pulse animate__infinite">Predict Emotion</button>
+
+                    <!-- Output Section -->
+                    <br class="output-section animate__animated animate__fadeInUp" id="emotionOutput">
+                        <div class="emotion-animation" id="emotionAnimation">
+                            <!-- Progress bar for loading animation -->
+                            <div class="progress"></div>
+                        </div>
+                        <p class="output-text" id="outputText">Your predicted emotion will appear here...</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Animated Footer -->
+        <footer class="footer animate__animated animate__fadeInUp">
+            <p>Created with ❤️ by Team -- 7</p>
+        </footer>
+    </div>
+
+    <script>
+        // Emotion-Specific Colors
+        const emotionColors = {
+            anger: "#F08080",       // Light Red
+            fear: "#C06C84",       // Purple
+            joy: "#F7E5B7",        // Light Yellow
+            love: "#FFCCCD",       // Pink
+            sadness: "#D4F0F0",    // Light Blue
+            surprise: "#F8B195",   // Peach
+            default: "#8CB5B5"     // Neutral Blue-Green
+        };
+
+        // Model Metrics Data
+        const modelMetrics = {
+            naive_bayes: "77.35%",
+            svm: "88.35%",
+            logistic_regression: "89.02%",
+            lasso_regression: "90.22%",
+            decision_tree: "84.00%",
+            random_forest: "86.25%",
+            knn: "47.55%",
+            xgboost: "89.18%"
+        };
+
+        // Update Model Accuracy Display
+        function updateModelAccuracy() {
+            const selectedModel = document.getElementById("modelSelect").value;
+            const accuracy = modelMetrics[selectedModel] || "N/A";
+            document.getElementById("accuracyDisplay").innerText = `Model Accuracy: ${accuracy}`;
+        }
+
+        // Predict Emotion
+        async function predictEmotion() {
+            const sentence = document.getElementById('sentenceInput').value.trim();
+            const output = document.getElementById('emotionOutput');
+            const animation = document.getElementById('emotionAnimation');
+            const outputText = document.getElementById('outputText');
+        
+            // Clear previous content and start loading animation
+            outputText.innerText = '';
+            animation.innerHTML = '<div class="progress"></div>';
+            const progressBar = animation.querySelector('.progress');
+        
+            if (!sentence) {
+                outputText.innerText = 'Please enter a sentence.';
+                animation.innerHTML = ''; // Clear animation
+                return;
+            }
+        
+            // Start progress bar animation
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = `${progress}%`;
+                progressBar.innerHTML = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(loadingInterval); // Stop progress animation
+                }
+            }, 100);
+        
+            try {
+                // Make API call to predict emotion
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sentence }),
+                });
+        
+                const data = await response.json();
+                if (response.ok) {
+                    setTimeout(() => {
+                        const emotion = data.emotion.toLowerCase();
+                        const color = emotionColors[emotion] || emotionColors.default;
+                        progressBar.style.backgroundColor = color;
+                        outputText.innerHTML = `Predicted Emotion: <strong>${data.emotion}</strong>`;
+                    }, 1000);
+                } else {
+                    outputText.innerText = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                outputText.innerText = 'Error predicting emotion. Please try again later.';
+            }
+        }
+    </script>
+</body>
+</html>
