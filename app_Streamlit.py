@@ -16,7 +16,8 @@ st.set_page_config(
 )
 
 # Paths to the saved models and results
-save_dir = os.path.join(os.path.dirname(__file__), "model_saves")
+save_dir = os.path.join(os.path.dirname(__file__), "Emotion_Detection", "model_saves")
+
 results_file = os.path.join(save_dir, "results.csv")
 vectorizer_file = os.path.join(save_dir, "tfidf_vect.pk")
 
@@ -356,7 +357,8 @@ if page == "Model Insights":
             st.markdown("### Metrics across different models and cross-validation folds")
 
             # Directory containing the model fit evaluation files
-            save_dir = os.path.join(os.path.dirname(__file__), "model_saves")
+            save_dir = os.path.join(os.path.dirname(__file__), "Emotion_Detection", "model_saves")
+
 
             # Find all CSV files containing cross-validation results
             model_files = [f for f in os.listdir(save_dir) if f.endswith('_cross_validation_results.csv')]
