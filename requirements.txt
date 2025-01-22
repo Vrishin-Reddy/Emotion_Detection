@@ -74,3 +74,6 @@ jsonschema
 #Website
 Streamlit
 Flask
+
+#visuilization
+Plotly
