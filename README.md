@@ -21,11 +21,6 @@ This project, **"Text-Based Mood Detection Using Machine Learning and Emotion Id
 ## About the Project
 This project uses deep learning techniques such as **BERT embeddings** for text feature extraction, alongside traditional machine learning models (e.g., **Lasso Regression**) for emotion detection. The web interface provides users with predictions and interactive visualizations.
 
-**Course and Professor:**  
-- AIT-526-001 (FALL 2024)  
-- Professor: Dr. Duoduo Liao  
-
-
 
 ## Key Features
 - **Emotion Detection:** Classifies text into emotions such as Joy, Sadness, Anger, Fear, Love, and Surprise.
@@ -126,8 +121,6 @@ This project was developed by:
 - Rohith Reddy Marlapally  
 - Rishitha Reddy Bitla  
 - Keerthana Reddy Kalva  
-
-**Institution:** George Mason University  
 
 ---
 
