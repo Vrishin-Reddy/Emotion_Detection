@@ -17,7 +17,7 @@ st.set_page_config(
 
 # Paths to the saved models and results
 # Set the absolute path for the model directory
-save_dir = "/mount/src/emotion_detection/Emotion_Detection/model_saves/"
+save_dir = "workspaces/Emotion_Detection/model_saves/"
 
 
 results_file = os.path.join(save_dir, "results.csv")
