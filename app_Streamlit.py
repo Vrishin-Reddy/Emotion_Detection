@@ -356,7 +356,7 @@ if page == "Model Insights":
             st.markdown("### Metrics across different models and cross-validation folds")
 
             # Directory containing the model fit evaluation files
-            save_dir = "C:\\Users\\vrishin\\Documents\\AIT_526_MP\\model_saves"  # Updated directory
+            save_dir = os.path.join(os.path.dirname(__file__), "model_saves")
 
             # Find all CSV files containing cross-validation results
             model_files = [f for f in os.listdir(save_dir) if f.endswith('_cross_validation_results.csv')]
