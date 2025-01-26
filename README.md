@@ -19,7 +19,7 @@ This project, **"Text-Based Mood Detection Using Machine Learning and Emotion Id
 ---
 
 ## About the Project
-This project uses deep learning techniques such as **BERT embeddings** for text feature extraction, alongside traditional machine learning models (e.g., **Lasso Regression**) for emotion detection. The web interface provides users with predictions and interactive visualizations.
+This project uses traditional machine learning techniques such as TF-IDF vectorization for text feature extraction, alongside models like **Lasso Regression** for emotion detection. The web interface provides users with predictions and interactive visualizations.
 
 
 ## Key Features
